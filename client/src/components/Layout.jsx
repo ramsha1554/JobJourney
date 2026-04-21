@@ -1,11 +1,13 @@
+import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LayoutDashboard, Briefcase, FileText, BarChart2, LogOut, Github, Twitter, Linkedin } from 'lucide-react';
+import { LayoutDashboard, Briefcase, FileText, BarChart2, LogOut, Github, Twitter, Linkedin, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Layout = () => {
     const { user, logout } = useAuth();
     const location = useLocation();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const isActive = (path) => location.pathname === path;
 
@@ -17,13 +19,36 @@ const Layout = () => {
     ];
 
     return (
-        <div className="flex h-screen bg-soft-white text-midnight font-sans">
+        <div className="flex h-screen bg-soft-white text-midnight font-sans overflow-hidden">
+            {/* Mobile Sidebar Overlay */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="fixed inset-0 bg-black/50 z-20 md:hidden"
+                    />
+                )}
+            </AnimatePresence>
+
             {/* Sidebar */}
-            <aside className="w-64 bg-midnight border-r border-gray-800 hidden md:flex flex-col shadow-xl z-10">
-                <div className="p-8">
+            <aside className={`
+                fixed inset-y-0 left-0 z-30 w-64 bg-midnight border-r border-gray-800 flex flex-col shadow-xl transition-transform duration-300 ease-in-out
+                md:relative md:translate-x-0
+                ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+            `}>
+                <div className="flex items-center justify-between p-8">
                     <h1 className="text-2xl font-bold bg-gradient-to-r from-teal to-blue-400 bg-clip-text text-transparent tracking-tight">
                         CareerPath
                     </h1>
+                    <button
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="md:hidden text-gray-400 hover:text-white"
+                    >
+                        <X className="w-6 h-6" />
+                    </button>
                 </div>
 
                 <nav className="flex-1 px-4 space-y-2">
@@ -31,6 +56,7 @@ const Layout = () => {
                         <Link
                             key={item.path}
                             to={item.path}
+                            onClick={() => setIsMobileMenuOpen(false)}
                             className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${isActive(item.path)
                                 ? 'bg-white/10 text-teal shadow-inner translate-x-1 backdrop-blur-sm'
                                 : 'text-gray-400 hover:bg-white/5 hover:text-white hover:translate-x-1'
@@ -63,14 +89,21 @@ const Layout = () => {
             </aside>
 
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col h-screen overflow-hidden">
+            <div className="flex-1 flex flex-col h-screen overflow-hidden w-full">
                 {/* Mobile Header */}
-                <header className="md:hidden bg-white border-b border-fog p-4 flex items-center justify-between shadow-sm z-20">
-                    <h1 className="text-xl font-bold text-midnight">CareerPath</h1>
+                <header className="md:hidden bg-white border-b border-fog p-4 flex items-center justify-between shadow-sm z-10">
+                    <button
+                        onClick={() => setIsMobileMenuOpen(true)}
+                        className="p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                    >
+                        <Menu className="w-6 h-6" />
+                    </button>
+                    <h1 className="text-xl font-bold bg-gradient-to-r from-teal to-blue-400 bg-clip-text text-transparent">CareerPath</h1>
+                    <div className="w-8" /> {/* Spacer for centering */}
                 </header>
 
                 {/* Scrollable Main Content */}
-                <main className="flex-1 overflow-y-auto p-6 md:p-12 scroll-smooth">
+                <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 scroll-smooth">
                     <div className="max-w-7xl mx-auto min-h-[calc(100vh-140px)]">
                         <AnimatePresence mode="wait">
                             <motion.div

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { Loader2, Plus, Calendar, Clock, CheckCircle } from 'lucide-react';
+import { Loader2, Plus, Calendar, Clock, CheckCircle, FileText, CalendarCheck, Trophy, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -34,46 +34,69 @@ const Dashboard = () => {
     ].filter(d => d.value > 0);
 
     return (
-        <div className="space-y-8">
-            <div className="flex justify-between items-center">
+        <div className="space-y-6 sm:space-y-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-                    <p className="text-gray-500">Welcome back, {user?.name}</p>
+                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Dashboard</h1>
+                    <p className="text-sm sm:text-base text-gray-500">Welcome back, {user?.name}</p>
                 </div>
-                <Link to="/add-job" className="btn-primary flex items-center">
+                <Link to="/add-job" className="btn-primary w-full sm:w-auto flex items-center justify-center">
                     <Plus className="w-5 h-5 mr-2" />
                     Track New Job
                 </Link>
             </div>
 
             {/* Summary Cards */}
-            <motion.div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                initial="hidden"
-                animate="visible"
-                variants={{
-                    visible: { transition: { staggerChildren: 0.1 } }
-                }}
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
-                    { title: "Total Applications", value: stats.total, color: "border-l-teal" }, // Using Teal as primary
-                    { title: "Interviews", value: stats.Interview || 0, color: "border-l-indigo-500" },
-                    { title: "Offers", value: stats.Offer || 0, color: "border-l-muted-green" },
-                    { title: "Active Processes", value: (stats.Applied || 0) + (stats.Interview || 0) + (stats.Offer || 0), color: "border-l-blue-500" }
+                    {
+                        title: "Total Applications",
+                        value: stats.total,
+                        icon: <FileText className="w-5 h-5 text-blue-600" />,
+                        bg: "bg-blue-50",
+                        border: "hover:border-blue-200"
+                    },
+                    {
+                        title: "Interviews",
+                        value: stats.Interview || 0,
+                        icon: <CalendarCheck className="w-5 h-5 text-purple-600" />,
+                        bg: "bg-purple-50",
+                        border: "hover:border-purple-200"
+                    },
+                    {
+                        title: "Offers",
+                        value: stats.Offer || 0,
+                        icon: <Trophy className="w-5 h-5 text-emerald-600" />,
+                        bg: "bg-emerald-50",
+                        border: "hover:border-emerald-200"
+                    },
+                    {
+                        title: "Active Processes",
+                        value: (stats.Applied || 0) + (stats.Interview || 0) + (stats.Offer || 0),
+                        icon: <Zap className="w-5 h-5 text-orange-600" />,
+                        bg: "bg-orange-50",
+                        border: "hover:border-orange-200"
+                    }
                 ].map((item, index) => (
                     <motion.div
                         key={index}
-                        className={`card p-6 border-l-4 ${item.color} hover:shadow-lg transition-shadow duration-300`}
-                        variants={{
-                            hidden: { opacity: 0, y: 20 },
-                            visible: { opacity: 1, y: 0 }
-                        }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className={`bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group ${item.border}`}
                     >
-                        <p className="text-sm font-medium text-gray-500">{item.title}</p>
-                        <p className="text-3xl font-bold text-midnight mt-2">{item.value}</p>
+                        <div className="flex justify-between items-start mb-4">
+                            <div className={`p-3 rounded-xl ${item.bg} transition-transform group-hover:scale-110 duration-300`}>
+                                {item.icon}
+                            </div>
+                        </div>
+                        <div>
+                            <p className="text-gray-500 text-sm font-medium mb-1 font-poppins">{item.title}</p>
+                            <h3 className="text-3xl font-bold text-gray-900 font-poppins tracking-tight">{item.value}</h3>
+                        </div>
                     </motion.div>
                 ))}
-            </motion.div>
+            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="card p-6">

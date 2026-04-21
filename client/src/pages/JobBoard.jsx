@@ -105,23 +105,23 @@ const JobBoard = () => {
     }
 
     return (
-        <div className="h-full flex flex-col bg-soft-white">
-            <div className="flex justify-between items-center mb-8 px-1">
+        <div className="h-full flex flex-col bg-soft-white overflow-hidden">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 px-1 gap-4 sm:gap-0">
                 <div>
-                    <h1 className="text-3xl font-bold text-midnight tracking-tight">Job Board</h1>
-                    <p className="text-gray-500 mt-1">Manage and track your applications</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-midnight tracking-tight">Job Board</h1>
+                    <p className="text-sm sm:text-base text-gray-500 mt-1">Manage and track your applications</p>
                 </div>
-                <Link to="/add-job" className="btn-primary flex items-center shadow-lg shadow-teal/20 hover:shadow-teal/30 transition-shadow">
+                <Link to="/add-job" className="btn-primary w-full sm:w-auto flex items-center justify-center shadow-lg shadow-teal/20 hover:shadow-teal/30 transition-shadow">
                     <Plus className="w-5 h-5 mr-2" />
                     New Application
                 </Link>
             </div>
 
-            <div className="flex-1 overflow-x-auto pb-6 scrollbar-hide">
+            <div className="flex-1 overflow-x-auto pb-6 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
                 <DragDropContext onDragEnd={onDragEnd}>
-                    <div className="flex gap-6 h-full min-w-[1200px] px-1">
+                    <div className="flex gap-4 sm:gap-6 h-full min-w-[300px] px-1">
                         {Object.entries(COLUMNS).map(([columnId, column]) => (
-                            <div key={columnId} className="w-80 flex-shrink-0 flex flex-col">
+                            <div key={columnId} className="w-[85vw] sm:w-80 flex-shrink-0 flex flex-col snap-center">
                                 {/* Column Header */}
                                 <div className={`p-4 mb-4 rounded-xl border flex items-center justify-between shadow-sm bg-white ${column.color}`}>
                                     <div className="flex items-center gap-3">

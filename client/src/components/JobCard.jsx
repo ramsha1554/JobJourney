@@ -19,7 +19,7 @@ const JobCard = ({ job, index }) => {
                 >
                     <Link to={`/jobs/${job._id}`} className="block group">
                         <div className="flex justify-between items-start mb-2">
-                            <h4 className="text-lg font-bold text-midnight leading-tight group-hover:text-teal transition-colors">
+                            <h4 className="text-lg font-bold text-midnight leading-tight group-hover:text-teal transition-colors line-clamp-2">
                                 {job.title}
                             </h4>
                             {job.salary && (
@@ -31,19 +31,21 @@ const JobCard = ({ job, index }) => {
 
                         <div className="flex flex-col space-y-1.5 mb-4">
                             <div className="flex items-center text-sm font-medium text-gray-600">
-                                <Building2 className="w-3.5 h-3.5 mr-2 text-teal" />
+                                <Building2 className="w-3.5 h-3.5 mr-2 text-teal flex-shrink-0" />
                                 <span className="truncate">{job.company}</span>
                             </div>
                             <div className="flex items-center text-xs text-gray-400">
-                                <MapPin className="w-3.5 h-3.5 mr-2" />
+                                <MapPin className="w-3.5 h-3.5 mr-2 flex-shrink-0" />
                                 <span className="truncate">{job.location}</span>
                             </div>
                         </div>
 
                         <div className="border-t border-gray-50 pt-3 flex items-center justify-between text-xs text-gray-400">
                             <div className="flex items-center" title={`Applied ${formatDistanceToNow(new Date(job.dateApplied))} ago`}>
-                                <CalendarClock className="w-3.5 h-3.5 mr-1.5" />
-                                {formatDistanceToNow(new Date(job.dateApplied), { addSuffix: true }).replace('about ', '')}
+                                <CalendarClock className="w-3.5 h-3.5 mr-1.5 flex-shrink-0" />
+                                <span className="truncate">
+                                    {formatDistanceToNow(new Date(job.dateApplied), { addSuffix: true }).replace('about ', '')}
+                                </span>
                             </div>
                         </div>
                     </Link>
