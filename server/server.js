@@ -21,12 +21,14 @@ const jobs = require('./routes/jobRoutes');
 const tasks = require('./routes/taskRoutes');
 const resumes = require('./routes/resumeRoutes');
 const analytics = require('./routes/analyticsRoutes');
+const ai = require('./routes/aiRoutes');
 
 app.use('/api/auth', auth);
 app.use('/api/jobs', jobs);
 app.use('/api/tasks', tasks);
 app.use('/api/resumes', resumes);
 app.use('/api/analytics', analytics);
+app.use('/api/ai', ai);
 
 app.get('/', (req, res) => {
     res.send('API is running...');
