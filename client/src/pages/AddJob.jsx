@@ -24,7 +24,7 @@ const AddJob = () => {
         company: '',
         location: 'Remote',
         status: 'Applied',
-        url: '',
+        jobUrl: '',
         salary: '',
         resume: '',
         notes: ''
@@ -110,8 +110,8 @@ const AddJob = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Job URL</label>
                             <input
                                 type="url"
-                                name="url"
-                                value={formData.url}
+                                name="jobUrl"
+                                value={formData.jobUrl}
                                 onChange={handleChange}
                                 className="input-field"
                                 placeholder="https://linkedin.com/jobs/..."

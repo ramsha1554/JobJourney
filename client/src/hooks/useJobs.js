@@ -29,8 +29,9 @@ export const useJobs = () => {
             const { data } = await api.put(`/jobs/${id}`, updates);
             return data.data;
         },
-        onSuccess: () => {
+        onSuccess: (data, variables) => {
             queryClient.invalidateQueries(['jobs']);
+            queryClient.invalidateQueries(['job', variables.id]);
             queryClient.invalidateQueries(['dashboardStats']);
         }
     });
@@ -45,6 +46,15 @@ export const useJobs = () => {
         }
     });
 
+    const reorderJobsMutation = useMutation({
+        mutationFn: async (jobs) => {
+            await api.post('/jobs/reorder', { jobs });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['jobs']);
+        }
+    });
+
     return {
         jobs,
         isLoading,
@@ -52,8 +62,10 @@ export const useJobs = () => {
         createJob: createJobMutation.mutate,
         updateJob: updateJobMutation.mutate,
         deleteJob: deleteJobMutation.mutate,
+        reorderJobs: reorderJobsMutation.mutate,
         isCreating: createJobMutation.isPending,
         isUpdating: updateJobMutation.isPending,
-        isDeleting: deleteJobMutation.isPending
+        isDeleting: deleteJobMutation.isPending,
+        isReordering: reorderJobsMutation.isPending
     };
 };
