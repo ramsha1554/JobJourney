@@ -4,7 +4,8 @@ const {
     getJob,
     createJob,
     updateJob,
-    deleteJob
+    deleteJob,
+    reorderJobs
 } = require('../controllers/jobController');
 const { protect } = require('../middleware/auth');
 
@@ -15,6 +16,8 @@ router.use(protect);
 router.route('/')
     .get(getJobs)
     .post(createJob);
+
+router.post('/reorder', reorderJobs);
 
 router.route('/:id')
     .get(getJob)

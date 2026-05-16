@@ -87,3 +87,23 @@ exports.deleteJob = async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 };
+
+exports.reorderJobs = async (req, res) => {
+    try {
+        const { jobs } = req.body; // Array of { id, columnOrder, status }
+
+        const updatePromises = jobs.map(item =>
+            JobApplication.findOneAndUpdate(
+                { _id: item.id, user: req.user.id },
+                { columnOrder: item.columnOrder, status: item.status },
+                { new: true }
+            )
+        );
+
+        await Promise.all(updatePromises);
+
+        res.status(200).json({ success: true, message: 'Board reordered successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+};

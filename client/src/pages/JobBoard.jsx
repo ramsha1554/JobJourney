@@ -39,7 +39,7 @@ const COLUMNS = {
 };
 
 const JobBoard = () => {
-    const { jobs, isLoading, updateJob } = useJobs();
+    const { jobs, isLoading, updateJob, reorderJobs } = useJobs();
     const [boardData, setBoardData] = useState({});
 
     useEffect(() => {
@@ -52,7 +52,10 @@ const JobBoard = () => {
                 Ghosted: []
             };
 
-            jobs.forEach(job => {
+            // Sort by columnOrder before grouping
+            const sortedJobs = [...jobs].sort((a, b) => (a.columnOrder || 0) - (b.columnOrder || 0));
+
+            sortedJobs.forEach(job => {
                 if (newBoardData[job.status]) {
                     newBoardData[job.status].push(job);
                 }
@@ -78,11 +81,20 @@ const JobBoard = () => {
         const finishColumn = destination.droppableId;
 
         const newBoardData = { ...boardData };
+        let updatedJobs = [];
 
         if (startColumn === finishColumn) {
             const columnJobs = Array.from(newBoardData[startColumn]);
             const [movedJob] = columnJobs.splice(source.index, 1);
             columnJobs.splice(destination.index, 0, movedJob);
+            
+            // Update columnOrder for all items in this column
+            updatedJobs = columnJobs.map((job, idx) => ({
+                id: job._id,
+                status: startColumn,
+                columnOrder: idx
+            }));
+
             newBoardData[startColumn] = columnJobs;
             setBoardData(newBoardData);
         } else {
@@ -92,11 +104,28 @@ const JobBoard = () => {
             const finishJobs = Array.from(newBoardData[finishColumn]);
             finishJobs.splice(destination.index, 0, movedJob);
 
+            // Update columnOrder for both columns
+            const updatedStart = startJobs.map((job, idx) => ({
+                id: job._id,
+                status: startColumn,
+                columnOrder: idx
+            }));
+
+            const updatedFinish = finishJobs.map((job, idx) => ({
+                id: job._id,
+                status: finishColumn,
+                columnOrder: idx
+            }));
+
+            updatedJobs = [...updatedStart, ...updatedFinish];
+
             newBoardData[startColumn] = startJobs;
             newBoardData[finishColumn] = finishJobs;
             setBoardData(newBoardData);
+        }
 
-            updateJob({ id: draggableId, status: finishColumn });
+        if (updatedJobs.length > 0) {
+            reorderJobs(updatedJobs);
         }
     };
 
