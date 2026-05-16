@@ -15,6 +15,9 @@ const ResumeSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add the file path']
     },
+    publicId: {
+        type: String
+    },
     tags: {
         type: [String],
         default: []

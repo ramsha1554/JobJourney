@@ -1,6 +1,5 @@
 const Resume = require('../models/Resume');
-const fs = require('fs');
-const path = require('path');
+const cloudinary = require('cloudinary').v2;
 
 exports.uploadResume = async (req, res) => {
     try {
@@ -13,7 +12,8 @@ exports.uploadResume = async (req, res) => {
         const resume = await Resume.create({
             user: req.user.id,
             name: name || req.file.originalname,
-            filePath: req.file.path,
+            filePath: req.file.path, // This is the Cloudinary URL
+            publicId: req.file.filename, // This is the Cloudinary public ID
             tags: tags ? tags.split(',') : []
         });
 
@@ -40,8 +40,9 @@ exports.deleteResume = async (req, res) => {
             return res.status(404).json({ success: false, error: 'Resume not found' });
         }
 
-        if (fs.existsSync(resume.filePath)) {
-            fs.unlinkSync(resume.filePath);
+        // Delete from Cloudinary
+        if (resume.publicId) {
+            await cloudinary.uploader.destroy(resume.publicId, { resource_type: 'raw' });
         }
 
         await resume.deleteOne();
