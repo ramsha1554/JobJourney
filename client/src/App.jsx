@@ -14,6 +14,7 @@ const JobBoard = lazy(() => import('./pages/JobBoard'));
 const AddJob = lazy(() => import('./pages/AddJob'));
 const ResumeManager = lazy(() => import('./pages/ResumeManager'));
 const JobDetail = lazy(() => import('./pages/JobDetail'));
+const Analytics = lazy(() => import('./pages/Analytics'));
 
 const queryClient = new QueryClient();
 
@@ -36,7 +37,7 @@ function App() {
                 <Route path="jobs" element={<JobBoard />} />
                 <Route path="jobs/:id" element={<JobDetail />} />
                 <Route path="resumes" element={<ResumeManager />} />
-                <Route path="analytics" element={<div>Analytics Page (Coming Soon)</div>} />
+                <Route path="analytics" element={<Analytics />} />
                 <Route path="add-job" element={<AddJob />} />
               </Route>
 
