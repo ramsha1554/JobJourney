@@ -1,4 +1,8 @@
-import { useState } from 'react';
+git add client/src/components/Layout.jsx
+
+git commit -m " made the domain name as the application mname " 
+
+git push origin mainimport { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -13,7 +17,7 @@ import {
   Menu,
   X,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 const Layout = () => {
   const { user, logout } = useAuth();
@@ -141,7 +145,8 @@ const Layout = () => {
           </div>
 
           {/* Footer */}
-          <footer className="mt-12 py-8 border-t border-fog bg-soft-white">
+      <footer className="mt-12 py-8 border-t border-fog bg-soft-white">
+
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
               <div className="mb-4 md:mb-0">
                 <p>
