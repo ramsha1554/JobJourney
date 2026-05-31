@@ -126,7 +126,7 @@ const AddJob = () => {
                                 value={formData.salary}
                                 onChange={handleChange}
                                 className="input-field"
-                                placeholder="e.g. $120k - $150k"
+                                placeholder="e.g. ₹12,00,000 - ₹15,00,000"
                             />
                         </div>
                     </div>
