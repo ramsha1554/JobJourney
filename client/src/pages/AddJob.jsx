@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const AddJob = () => {
     const navigate = useNavigate();
