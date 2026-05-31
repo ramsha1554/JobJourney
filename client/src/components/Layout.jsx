@@ -1,8 +1,4 @@
-git add client/src/components/Layout.jsx
-
-git commit -m " made the domain name as the application mname " 
-
-git push origin mainimport { useState } from 'react';
+import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -17,7 +13,7 @@ import {
   Menu,
   X,
 } from 'lucide-react';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Layout = () => {
   const { user, logout } = useAuth();
@@ -35,7 +31,6 @@ const Layout = () => {
 
   return (
     <div className="flex h-screen bg-soft-white text-midnight font-sans overflow-hidden">
-      {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -48,7 +43,6 @@ const Layout = () => {
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
       <aside
         className={`
           fixed inset-y-0 left-0 z-30 w-64 bg-midnight border-r border-gray-800 flex flex-col shadow-xl transition-transform duration-300 ease-in-out
@@ -96,9 +90,7 @@ const Layout = () => {
               {user?.name?.charAt(0).toUpperCase()}
             </div>
             <div className="ml-3 overflow-hidden">
-              <p className="text-sm font-semibold text-white truncate">
-                {user?.name}
-              </p>
+              <p className="text-sm font-semibold text-white truncate">{user?.name}</p>
               <p className="text-xs text-gray-400 truncate">{user?.email}</p>
             </div>
           </div>
@@ -112,9 +104,7 @@ const Layout = () => {
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden w-full">
-        {/* Mobile Header */}
         <header className="md:hidden bg-white border-b border-fog p-4 flex items-center justify-between shadow-sm z-10">
           <button
             onClick={() => setIsMobileMenuOpen(true)}
@@ -125,10 +115,9 @@ const Layout = () => {
           <h1 className="text-xl font-bold bg-gradient-to-r from-teal to-blue-400 bg-clip-text text-transparent">
             JobJourney
           </h1>
-          <div className="w-8" /> {/* Spacer for centering */}
+          <div className="w-8" />
         </header>
 
-        {/* Scrollable Main Content */}
         <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 scroll-smooth">
           <div className="max-w-7xl mx-auto min-h-[calc(100vh-140px)]">
             <AnimatePresence mode="wait">
@@ -144,9 +133,7 @@ const Layout = () => {
             </AnimatePresence>
           </div>
 
-          {/* Footer */}
-      <footer className="mt-12 py-8 border-t border-fog bg-soft-white">
-
+          <footer className="mt-12 py-8 border-t border-fog bg-soft-white">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
               <div className="mb-4 md:mb-0">
                 <p>
@@ -154,22 +141,13 @@ const Layout = () => {
                 </p>
               </div>
               <div className="flex space-x-6">
-                <a
-                  href="#"
-                  className="hover:text-teal transition-colors"
-                >
+                <a href="#" className="hover:text-teal transition-colors">
                   <Github className="w-4 h-4" />
                 </a>
-                <a
-                  href="#"
-                  className="hover:text-teal transition-colors"
-                >
+                <a href="#" className="hover:text-teal transition-colors">
                   <Twitter className="w-4 h-4" />
                 </a>
-                <a
-                  href="#"
-                  className="hover:text-teal transition-colors"
-                >
+                <a href="#" className="hover:text-teal transition-colors">
                   <Linkedin className="w-4 h-4" />
                 </a>
               </div>
