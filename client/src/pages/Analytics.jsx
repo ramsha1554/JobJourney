@@ -102,7 +102,7 @@ const Analytics = () => {
                             <p className="text-sm text-gray-500">A look at activity for the last six months.</p>
                         </div>
                     </div>
-                    <div className="h-80">
+                    <div className="h-80 w-full">
                         {monthlyApplications.length > 0 ? (
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart data={monthlyApplications} margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>
@@ -127,7 +127,7 @@ const Analytics = () => {
                         </div>
                         <PieIcon className="w-5 h-5 text-slate-500" />
                     </div>
-                    <div className="h-80">
+                    <div className="h-80 w-full">
                         {pieData.length > 0 ? (
                             <ResponsiveContainer width="100%" height="100%">
                                 <PieChart>
