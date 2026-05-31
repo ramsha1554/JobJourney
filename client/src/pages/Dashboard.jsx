@@ -110,7 +110,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="card p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-6">Application Status</h3>
-                    <div className="h-64">
+                    <div className="h-64 w-full">
                         {pieData.length > 0 ? (
                             <ResponsiveContainer width="100%" height="100%">
                                 <PieChart>
@@ -149,7 +149,7 @@ const Dashboard = () => {
 
                 <div className="card p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-6">Application Activity</h3>
-                    <div className="h-64">
+                    <div className="h-64 w-full">
                         {monthlyApplications.length > 0 ? (
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart data={monthlyApplications}>
