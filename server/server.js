@@ -24,11 +24,9 @@ app.use(
   }),
 );
 
-// Handle preflight explicitly
-app.options("*", cors());
 app.use(helmet());
 
-app.use(morgan("dev"));
+app.use(morgan("dev")); // log for development
 
 const auth = require("./routes/authRoutes");
 const jobs = require("./routes/jobRoutes");
