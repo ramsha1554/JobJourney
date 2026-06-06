@@ -11,23 +11,62 @@ exports.uploadResume = async (req, res) => {
 
     const { name, tags } = req.body;
 
+    const filePath =
+      req.file?.secure_url || // cloudinary-storage often uses secure_url
+      req.file?.url ||
+      req.file?.path; // fallback (multer)
+
+    const publicId =
+      req.file?.public_id || // cloudinary-storage often uses public_id
+      req.file?.filename; // fallback
+
+    // Validate required fields to avoid 500s from Mongoose validation errors
+    if (!req.user?.id) {
+      return res.status(401).json({ success: false, error: "Not authorized" });
+    }
+    if (!filePath) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing file URL from upload",
+        details: { availableFileKeys: Object.keys(req.file || {}) },
+      });
+    }
+
     const resume = await Resume.create({
       user: req.user.id,
       name: name || req.file.originalname,
-      filePath: req.file.path, // This is the Cloudinary URL
-      publicId: req.file.filename, // This is the Cloudinary public ID
-      tags: tags ? tags.split(",") : [],
+      filePath,
+      publicId,
+      tags: tags
+        ? tags
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean)
+        : [],
     });
 
-    res.status(201).json({ success: true, data: resume });
+    return res.status(201).json({ success: true, data: resume });
   } catch (error) {
-    console.error("deleteResume failed:", {
+    console.error("uploadResume failed:", {
       message: error?.message,
       stack: error?.stack,
+      // helpful for Cloudinary/multer issues in hosted envs
+      file: req.file ? { keys: Object.keys(req.file) } : undefined,
+      body: req.body,
     });
+
+    // If it's a validation error, return 400 instead of 500
+    if (error?.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        error: "Resume validation failed",
+        details: error?.errors,
+      });
+    }
+
     return res
       .status(500)
-      .json({ success: false, error: "Failed to delete resume" });
+      .json({ success: false, error: "Failed to upload resume" });
   }
 };
 
