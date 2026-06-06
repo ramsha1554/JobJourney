@@ -3,3 +3,8 @@ node_modules/
 
 # Environment variables
 .env
+
+# Server environment files (never commit secrets)
+server/.env
+server/config/.env
+
