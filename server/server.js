@@ -28,6 +28,13 @@ app.use(helmet());
 
 app.use(morgan("dev")); // log for development
 
+// Quick config sanity check (helps catch deployed env issues)
+if (!process.env.JWT_SECRET) {
+  console.error(
+    "[server] Missing JWT_SECRET env var. protect() will fail with 500.",
+  );
+}
+
 const auth = require("./routes/authRoutes");
 const jobs = require("./routes/jobRoutes");
 const tasks = require("./routes/taskRoutes");

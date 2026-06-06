@@ -36,6 +36,14 @@ const protect = async (req, res, next) => {
   }
 
   try {
+    if (!process.env.JWT_SECRET) {
+      console.error("JWT_SECRET is not configured on the server");
+      return res.status(500).json({
+        success: false,
+        error: "Server misconfiguration: JWT_SECRET is not configured",
+      });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Be resilient to token payload shape
