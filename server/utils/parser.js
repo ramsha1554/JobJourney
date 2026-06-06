@@ -26,15 +26,21 @@ exports.extractTextFromBuffer = async (buffer, originalname) => {
 exports.extractTextFromUrl = async (url) => {
     const response = await axios.get(url, { responseType: 'arraybuffer' });
     const buffer = Buffer.from(response.data, 'binary');
-    
-    // We assume PDF for Cloudinary raw files if we don't have the original name, 
-    // but Cloudinary URLs often contain the format or public ID.
-    // For simplicity, we try PDF then DOCX.
+
+    // Try PDF first. If it's not a PDF (e.g., docx), pdf-parse will throw.
+    // Fall back to DOCX.
     try {
         const data = await pdf(buffer);
         return data.text;
     } catch (err) {
-        const data = await mammoth.extractRawText({ buffer });
-        return data.value;
+        try {
+            const data = await mammoth.extractRawText({ buffer });
+            return data.value;
+        } catch (err2) {
+            // Provide a clearer error for the route/controller.
+            const msg = err?.message || String(err);
+            const msg2 = err2?.message || String(err2);
+            throw new Error(`Failed to extract text. Tried PDF parse error: ${msg}. DOCX parse error: ${msg2}`);
+        }
     }
 };
