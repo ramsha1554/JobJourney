@@ -29,10 +29,22 @@ app.use(helmet());
 app.use(morgan("dev")); // log for development
 
 // Quick config sanity check (helps catch deployed env issues)
-if (!process.env.JWT_SECRET) {
+const REQUIRED_ENV_VARS = [
+  "JWT_SECRET",
+  "MONGODB_URI",
+  "CLOUDINARY_CLOUD_NAME",
+  "CLOUDINARY_API_KEY",
+  "CLOUDINARY_API_SECRET",
+];
+
+const missing = REQUIRED_ENV_VARS.filter((k) => !process.env[k]);
+
+if (missing.length > 0) {
   console.error(
-    "[server] Missing JWT_SECRET env var. protect() will fail with 500.",
+    `[server] Missing required environment variables: ${missing.join(", ")}.`,
   );
+  console.error("[server] Refusing to start.");
+  process.exit(1);
 }
 
 const auth = require("./routes/authRoutes");
