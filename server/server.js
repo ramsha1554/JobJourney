@@ -1,6 +1,8 @@
-// Load environment variables BEFORE any other imports
+// Load environment variables BEFORE any other imports (local development only)
 const dotenv = require("dotenv");
-dotenv.config({ path: require("path").resolve(__dirname, ".env") });
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config({ path: require("path").resolve(__dirname, ".env") });
+}
 
 const express = require("express");
 const cors = require("cors");
