@@ -14,8 +14,20 @@ connectDB();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
+// Explicit CORS config for deployed frontend -> deployed API preflight requests
+app.use(
+  cors({
+    origin: ["https://job-journey-gold.vercel.app"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+
+// Handle preflight explicitly
+app.options("*", cors());
 app.use(helmet());
+
 app.use(morgan("dev"));
 
 const auth = require("./routes/authRoutes");

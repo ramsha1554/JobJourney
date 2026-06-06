@@ -9,7 +9,7 @@ if (!apiKey) {
   );
 }
 
-const genAI = new GoogleGenerativeAI(apiKey);
+const genAI = new GoogleGenerativeAI({ apiKey });
 
 /**
  * Analyzes a resume against a job description using Gemini 1.5 Flash.
