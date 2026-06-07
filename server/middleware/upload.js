@@ -11,7 +11,6 @@ const storage = new CloudinaryStorage({
   },
 });
 
-// Configure cloudinary lazily so it always reads current env vars.
 const upload = multer({
   storage: {
     _handleFile: (req, file, cb) => {
@@ -20,8 +19,17 @@ const upload = multer({
         api_key: process.env.CLOUDINARY_API_KEY,
         api_secret: process.env.CLOUDINARY_API_SECRET,
       });
-
-      storage._handleFile(req, file, cb);
+      console.log("Cloudinary config at runtime:", {
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        secret_set: !!process.env.CLOUDINARY_API_SECRET,
+      });
+      storage._handleFile(req, file, (err, result) => {
+        if (err) {
+          console.error("Cloudinary upload error:", JSON.stringify(err, Object.getOwnPropertyNames(err)));
+        }
+        cb(err, result);
+      });
     },
     _removeFile: (req, file, cb) => {
       storage._removeFile(req, file, cb);
