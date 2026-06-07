@@ -16,7 +16,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
  * Returns structured JSON data.
  */
 exports.analyzeMatch = async (resumeText, jobDescription) => {
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
   
 
   const prompt = `
@@ -111,7 +111,7 @@ exports.generateInterviewQuestions = async (
   company,
   jobDescription,
 ) => {
- const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
   const prompt = `
     Generate 5 high-impact interview questions for the following role:
