@@ -12,6 +12,14 @@ const api = axios.create({
     }
 });
 
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -21,13 +29,11 @@ export const AuthProvider = ({ children }) => {
         const checkUserLoggedIn = async () => {
             const token = localStorage.getItem('token');
             if (token) {
-                api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 try {
                     const { data } = await api.get('/auth/me');
                     setUser(data.data);
                 } catch (err) {
                     localStorage.removeItem('token');
-                    delete api.defaults.headers.common['Authorization'];
                     setUser(null);
                 }
             }
@@ -42,8 +48,6 @@ export const AuthProvider = ({ children }) => {
             setError(null);
             const { data } = await api.post('/auth/login', { email, password });
             localStorage.setItem('token', data.token);
-            api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-
             const meRes = await api.get('/auth/me');
             setUser(meRes.data.data);
             return { success: true };
@@ -58,8 +62,6 @@ export const AuthProvider = ({ children }) => {
             setError(null);
             const { data } = await api.post('/auth/register', { name, email, password });
             localStorage.setItem('token', data.token);
-            api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-
             const meRes = await api.get('/auth/me');
             setUser(meRes.data.data);
             return { success: true };
@@ -71,7 +73,6 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('token');
-        delete api.defaults.headers.common['Authorization'];
         setUser(null);
     };
 
