@@ -1,12 +1,14 @@
-const pdfParse = require('pdf-parse/lib/pdf-parse.js');
 const mammoth = require('mammoth');
 const axios = require('axios');
+
+const pdfModule = require('pdf-parse');
+const pdf = pdfModule.default || pdfModule;
 
 exports.extractTextFromBuffer = async (buffer, originalname) => {
     const extension = originalname.split('.').pop().toLowerCase();
 
     if (extension === 'pdf') {
-        const data = await pdfParse(buffer);
+        const data = await pdf(buffer);
         return data.text;
     } else if (extension === 'doc' || extension === 'docx') {
         const data = await mammoth.extractRawText({ buffer });
@@ -21,7 +23,7 @@ exports.extractTextFromUrl = async (url) => {
     const buffer = Buffer.from(response.data, 'binary');
 
     try {
-        const data = await pdfParse(buffer);
+        const data = await pdf(buffer);
         return data.text;
     } catch (err) {
         try {
