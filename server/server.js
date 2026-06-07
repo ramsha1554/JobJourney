@@ -10,14 +10,12 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
 
-// Start DB connection (db.js will validate env)
 connectDB();
 
 const app = express();
 
 app.use(express.json());
 
-// Explicit CORS config for deployed frontend -> deployed API preflight requests
 app.use(
   cors({
     origin: ["https://job-journey-gold.vercel.app"],
@@ -27,10 +25,8 @@ app.use(
 );
 
 app.use(helmet());
+app.use(morgan("dev"));
 
-app.use(morgan("dev")); // log for development
-
-// Quick config sanity check (helps catch deployed env issues)
 const REQUIRED_ENV_VARS = [
   "JWT_SECRET",
   "MONGODB_URI",
@@ -40,11 +36,8 @@ const REQUIRED_ENV_VARS = [
 ];
 
 const missing = REQUIRED_ENV_VARS.filter((k) => !process.env[k]);
-
 if (missing.length > 0) {
-  console.error(
-    `[server] Missing required environment variables: ${missing.join(", ")}.`,
-  );
+  console.error(`[server] Missing required environment variables: ${missing.join(", ")}.`);
   console.error("[server] Refusing to start.");
   process.exit(1);
 }
@@ -67,8 +60,17 @@ app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-const PORT = process.env.PORT || 5000;
+// Global error handler — MUST be last, after all routes
+app.use((err, req, res, next) => {
+  console.error("Global error:", JSON.stringify({
+    message: err?.message,
+    stack: err?.stack,
+    name: err?.name,
+  }));
+  res.status(500).json({ success: false, error: "Internal server error" });
+});
 
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
