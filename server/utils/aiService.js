@@ -9,14 +9,15 @@ if (!apiKey) {
   );
 }
 
-const genAI = new GoogleGenerativeAI({ apiKey });
+const genAI = new GoogleGenerativeAI(apiKey);
 
 /**
  * Analyzes a resume against a job description using Gemini 1.5 Flash.
  * Returns structured JSON data.
  */
 exports.analyzeMatch = async (resumeText, jobDescription) => {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+  
 
   const prompt = `
     You are an expert ATS (Applicant Tracking System) and Career Coach.
@@ -110,7 +111,7 @@ exports.generateInterviewQuestions = async (
   company,
   jobDescription,
 ) => {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+ const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const prompt = `
     Generate 5 high-impact interview questions for the following role:
@@ -124,6 +125,7 @@ exports.generateInterviewQuestions = async (
     - 1 Company-specific question
 
     Return ONLY a JSON array of strings.
+
   `;
 
   try {
