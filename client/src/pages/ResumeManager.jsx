@@ -21,9 +21,7 @@ const ResumeManager = () => {
 
     const uploadMutation = useMutation({
         mutationFn: async (formData) => {
-            const { data } = await api.post('/resumes', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+          const { data } = await api.post('/resumes', formData);
             return data.data;
         },
         onSuccess: () => {
