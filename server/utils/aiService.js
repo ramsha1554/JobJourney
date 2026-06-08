@@ -1,24 +1,18 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const Groq = require("groq-sdk");
 
-// Create a singleton genAI client, but validate env eagerly for clearer failures.
-const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = process.env.GROQ_API_KEY;
 
 if (!apiKey) {
   throw new Error(
-    "GEMINI_API_KEY is missing. Set it in server/.env (or your environment variables).",
+    "GROQ_API_KEY is missing. Set it in server/.env or Render dashboard.",
   );
 }
 
-const genAI = new GoogleGenerativeAI(apiKey);
+const groq = new Groq({ apiKey });
 
-/**
- * Analyzes a resume against a job description using Gemini 1.5 Flash.
- * Returns structured JSON data.
- */
+const MODEL = "llama-3.3-70b-versatile";
+
 exports.analyzeMatch = async (resumeText, jobDescription) => {
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-  
-
   const prompt = `
     You are an expert ATS (Applicant Tracking System) and Career Coach.
     Analyze the following Resume against the Job Description.
@@ -29,7 +23,8 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
     Job Description:
     ${jobDescription}
 
-    Return ONLY a JSON object with the following structure:
+    Return ONLY a valid JSON object with no markdown, no extra text, no code fences.
+    Use exactly this structure:
     {
       "matchScore": number (0-100),
       "missingKeywords": [string],
@@ -39,36 +34,32 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
   `;
 
   try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const completion = await groq.chat.completions.create({
+      model: MODEL,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.3,
+    });
 
-    // Attempt to extract ONLY the first JSON object from the response.
-    // Gemini sometimes wraps JSON with markdown (```json ... ```), or adds commentary.
-    const jsonObjectMatch = text.match(/\{[\s\S]*\}/);
+    const text = completion.choices[0]?.message?.content || "";
 
-    if (!jsonObjectMatch?.[0]) {
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch?.[0]) {
       return {
         matchScore: 0,
         missingKeywords: [],
         skillGaps: [],
-        improvementSuggestions:
-          "AI returned an unexpected format. Please try again.",
+        improvementSuggestions: "AI returned unexpected format. Please try again.",
         parseError: "No JSON object found in AI response",
       };
     }
 
-    const candidate = jsonObjectMatch[0];
-
     try {
-      return JSON.parse(candidate);
-    } catch (parseErr) {
-      // Last-resort cleanup: remove trailing commas before } or ]
-      const cleaned = candidate
+      return JSON.parse(jsonMatch[0]);
+    } catch {
+      const cleaned = jsonMatch[0]
         .replace(/,\s*}/g, "}")
         .replace(/,\s*]/g, "]")
         .trim();
-
       try {
         return JSON.parse(cleaned);
       } catch {
@@ -77,12 +68,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
           missingKeywords: [],
           skillGaps: [],
           improvementSuggestions: "AI returned invalid JSON. Please try again.",
-          parseError:
-            "JSON parse failed after cleanup. See server logs for details.",
-          debug: {
-            first200Chars: (text ?? "").slice(0, 200),
-            parseErr: parseErr?.message,
-          },
+          parseError: "JSON parse failed after cleanup.",
         };
       }
     }
@@ -91,28 +77,17 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
       message: error?.message,
       stack: error?.stack,
     });
-
     return {
       matchScore: 0,
       missingKeywords: [],
       skillGaps: [],
-      improvementSuggestions:
-        "AI analysis failed due to a server error. Please try again.",
+      improvementSuggestions: "AI analysis failed. Please try again.",
       error: error?.message,
     };
   }
 };
 
-/**
- * Generates interview questions based on role and company.
- */
-exports.generateInterviewQuestions = async (
-  jobTitle,
-  company,
-  jobDescription,
-) => {
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-
+exports.generateInterviewQuestions = async (jobTitle, company, jobDescription) => {
   const prompt = `
     Generate 5 high-impact interview questions for the following role:
     Role: ${jobTitle}
@@ -124,23 +99,24 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
     - 2 Behavioral questions
     - 1 Company-specific question
 
-    Return ONLY a JSON array of strings.
-
+    Return ONLY a valid JSON array of strings. No markdown, no code fences, no extra text.
   `;
 
   try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const completion = await groq.chat.completions.create({
+      model: MODEL,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.5,
+    });
+
+    const text = completion.choices[0]?.message?.content || "";
 
     const jsonMatch = text.match(/\[[\s\S]*\]/);
     if (jsonMatch) {
       return JSON.parse(jsonMatch[0]);
     }
 
-    throw new Error(
-      `Could not parse AI response as JSON array. Response length=${text?.length ?? 0}. First200Chars=${(text ?? "").slice(0, 200)}`,
-    );
+    throw new Error("Could not parse AI response as JSON array.");
   } catch (error) {
     console.error("AI Question Gen Error:", {
       message: error?.message,

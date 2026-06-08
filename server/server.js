@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["https://job-journey-gold.vercel.app"],
+    origin: ["https://job-journey-gold.vercel.app" , "http://localhost:5173" ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
