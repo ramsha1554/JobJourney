@@ -1,14 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
-import { PieChart } from 'recharts/es6/chart/PieChart';
-import { Pie } from 'recharts/es6/polar/Pie';
-import { Cell } from 'recharts/es6/component/Cell';
-import { ResponsiveContainer } from 'recharts/es6/component/ResponsiveContainer';
-import { Tooltip } from 'recharts/es6/component/Tooltip';
-import { BarChart } from 'recharts/es6/chart/BarChart';
-import { XAxis } from 'recharts/es6/cartesian/XAxis';
-import { YAxis } from 'recharts/es6/cartesian/YAxis';
-import { CartesianGrid } from 'recharts/es6/cartesian/CartesianGrid';
+import {
+    PieChart,
+    Pie,
+    Cell,
+    ResponsiveContainer,
+    Tooltip,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid
+} from 'recharts';
 import { Loader2, BarChart3, PieChart as PieIcon, TrendingUp, Clock, Smile } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -102,20 +105,22 @@ const Analytics = () => {
                             <p className="text-sm text-gray-500">A look at activity for the last six months.</p>
                         </div>
                     </div>
-                    <div className="h-80 w-full">
-                        {monthlyApplications.length > 0 ? (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={monthlyApplications} margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                    <XAxis dataKey="_id" tickFormatter={(val) => `${val.month}/${val.year}`} tick={{ fontSize: 12 }} />
-                                    <YAxis />
-                                    <Tooltip labelFormatter={(label) => `${label.month}/${label.year}`} />
-                                    <Bar dataKey="count" fill="#22C55E" radius={[8, 8, 0, 0]} />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        ) : (
-                            <div className="h-full flex items-center justify-center text-gray-400">No activity data yet.</div>
-                        )}
+<div className="h-80 w-full" style={{ minHeight: 320 }}>
+                        <div className="h-full w-full" style={{ minHeight: 320 }}>
+                            {monthlyApplications.length > 0 ? (
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={monthlyApplications} margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                        <XAxis dataKey="_id" tickFormatter={(val) => `${val.month}/${val.year}`} tick={{ fontSize: 12 }} />
+                                        <YAxis />
+                                        <Tooltip labelFormatter={(label) => `${label.month}/${label.year}`} />
+                                        <Bar dataKey="count" fill="#22C55E" radius={[8, 8, 0, 0]} />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            ) : (
+                                <div className="h-full flex items-center justify-center text-gray-400">No activity data yet.</div>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -127,21 +132,23 @@ const Analytics = () => {
                         </div>
                         <PieIcon className="w-5 h-5 text-slate-500" />
                     </div>
-                    <div className="h-80 w-full">
-                        {pieData.length > 0 ? (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie data={pieData} innerRadius={60} outerRadius={90} paddingAngle={6} dataKey="value">
-                                        {pieData.map((entry, index) => (
-                                            <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip formatter={(value) => `${value} application${value === 1 ? '' : 's'}`} />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        ) : (
-                            <div className="h-full flex items-center justify-center text-gray-400">No status data available.</div>
-                        )}
+<div className="h-80 w-full">
+                        <div className="h-full w-full" style={{ minHeight: 320 }}>
+                            {pieData.length > 0 ? (
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie data={pieData} innerRadius={60} outerRadius={90} paddingAngle={6} dataKey="value">
+                                            {pieData.map((entry, index) => (
+                                                <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip formatter={(value) => `${value} application${value === 1 ? '' : 's'}`} />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            ) : (
+                                <div className="h-full flex items-center justify-center text-gray-400">No status data available.</div>
+                            )}
+                        </div>
                     </div>
                     <div className="mt-6 grid gap-3">
                         {pieData.map((entry, index) => (
@@ -161,3 +168,4 @@ const Analytics = () => {
 };
 
 export default Analytics;
+

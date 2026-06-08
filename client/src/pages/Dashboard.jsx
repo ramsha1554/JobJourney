@@ -110,32 +110,37 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="card p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-6">Application Status</h3>
-                    <div className="h-64 w-full">
-                        {pieData.length > 0 ? (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={pieData}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={60}
-                                        outerRadius={80}
-                                        fill="#8884d8"
-                                        paddingAngle={5}
-                                        dataKey="value"
-                                    >
-                                        {pieData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        ) : (
-                            <div className="h-full flex flex-col items-center justify-center text-gray-400">
-                                <p>No data available</p>
-                            </div>
-                        )}
+<div className="h-64 w-full" style={{ minHeight: 256 }}>
+                        <div className="h-full w-full" style={{ minHeight: 256 }}>
+
+
+
+                            {pieData.length > 0 ? (
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={pieData}
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={60}
+                                            outerRadius={80}
+                                            fill="#8884d8"
+                                            paddingAngle={5}
+                                            dataKey="value"
+                                        >
+                                            {pieData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            ) : (
+                                <div className="h-full flex flex-col items-center justify-center text-gray-400">
+                                    <p>No data available</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
                         {pieData.map((entry, index) => (
@@ -149,26 +154,29 @@ const Dashboard = () => {
 
                 <div className="card p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-6">Application Activity</h3>
-                    <div className="h-64 w-full">
-                        {monthlyApplications.length > 0 ? (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={monthlyApplications}>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                    <XAxis
-                                        dataKey="_id"
-                                        tickFormatter={(val) => `${val.month}/${val.year}`}
-                                        tick={{ fontSize: 12 }}
-                                    />
-                                    <YAxis />
-                                    <Tooltip labelFormatter={(val) => `${val.month}/${val.year}`} />
-                                    <Bar dataKey="count" fill="#4ade80" radius={[4, 4, 0, 0]} />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        ) : (
-                            <div className="h-full flex flex-col items-center justify-center text-gray-400">
-                                <p>No activity yet</p>
-                            </div>
-                        )}
+<div className="h-64 w-full" style={{ minHeight: 256 }}>
+                        <div className="h-full w-full" style={{ minHeight: 256 }}>
+
+                            {monthlyApplications.length > 0 ? (
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={monthlyApplications}>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                        <XAxis
+                                            dataKey="_id"
+                                            tickFormatter={(val) => `${val.month}/${val.year}`}
+                                            tick={{ fontSize: 12 }}
+                                        />
+                                        <YAxis />
+                                        <Tooltip labelFormatter={(val) => `${val.month}/${val.year}`} />
+                                        <Bar dataKey="count" fill="#4ade80" radius={[4, 4, 0, 0]} />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            ) : (
+                                <div className="h-full flex flex-col items-center justify-center text-gray-400">
+                                    <p>No activity yet</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
