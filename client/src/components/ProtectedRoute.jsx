@@ -9,9 +9,9 @@ const ProtectedRoute = ({ children }) => {
         return <div className="flex items-center justify-center h-screen">Loading...</div>;
     }
 
-    if (!user) {
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
+  if (!user) {
+    return <Navigate to="/landing" state={{ from: location }} replace />;
+}
 
     return children;
 };

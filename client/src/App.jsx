@@ -15,6 +15,7 @@ const AddJob = lazy(() => import('./pages/AddJob'));
 const ResumeManager = lazy(() => import('./pages/ResumeManager'));
 const JobDetail = lazy(() => import('./pages/JobDetail'));
 const Analytics = lazy(() => import('./pages/Analytics'));
+const LandingPage = lazy(() => import('./pages/LandingPage'));
 
 const queryClient = new QueryClient();
 
@@ -24,25 +25,26 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <Suspense fallback={<LoadingFallback />}>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+        <Routes>
+  <Route path="/login" element={<Login />} />
+  <Route path="/register" element={<Register />} />
+  <Route path="/landing" element={<LandingPage />} />
 
-              <Route path="/" element={
-                <ProtectedRoute>
-                  <Layout />
-                </ProtectedRoute>
-              }>
-                <Route index element={<Dashboard />} />
-                <Route path="jobs" element={<JobBoard />} />
-                <Route path="jobs/:id" element={<JobDetail />} />
-                <Route path="resumes" element={<ResumeManager />} />
-                <Route path="analytics" element={<Analytics />} />
-                <Route path="add-job" element={<AddJob />} />
-              </Route>
+  <Route path="/" element={
+    <ProtectedRoute>
+      <Layout />
+    </ProtectedRoute>
+  }>
+    <Route index element={<Dashboard />} />
+    <Route path="jobs" element={<JobBoard />} />
+    <Route path="jobs/:id" element={<JobDetail />} />
+    <Route path="resumes" element={<ResumeManager />} />
+    <Route path="analytics" element={<Analytics />} />
+    <Route path="add-job" element={<AddJob />} />
+  </Route>
 
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+  <Route path="*" element={<Navigate to="/landing" replace />} />
+</Routes>
           </Suspense>
         </AuthProvider>
       </BrowserRouter>
