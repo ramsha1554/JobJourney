@@ -98,7 +98,7 @@ const Register = () => {
                                 type="text"
                                 value={name}
                                 onChange={e => setName(e.target.value)}
-                                placeholder="Ramsha Anjum"
+                                placeholder="Your full name"
                                 required
                                 className="reg-input"
                                 style={{
