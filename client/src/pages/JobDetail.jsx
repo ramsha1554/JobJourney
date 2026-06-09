@@ -13,6 +13,8 @@ import {
   Calendar,
   Monitor,
   Loader2,
+  CheckCircle2,
+  Clock,
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -270,7 +272,7 @@ const JobDetail = () => {
                 <label className="text-xs text-gray-500 uppercase tracking-wide">
                   Interview Date
                 </label>
-                <div className="flex items-center mt-1">
+                <div className="flex items-center gap-2 mt-1">
                   <input
                     type="date"
                     value={
@@ -287,6 +289,19 @@ const JobDetail = () => {
                     }}
                     className="btn-secondary py-2 border-gray-300 w-full"
                   />
+                  {job.interviewDate ? (
+                    new Date(job.interviewDate) > new Date() ? (
+                      <span className="flex items-center gap-1 px-2 py-1 text-xs rounded-full bg-teal-50 text-teal-700 border border-teal-200 whitespace-nowrap">
+                        <Clock className="w-3 h-3" /> Upcoming
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1 px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-500 border border-gray-200 whitespace-nowrap">
+                        <CheckCircle2 className="w-3 h-3" /> Done
+                      </span>
+                    )
+                  ) : (
+                    <span className="text-xs text-gray-400 whitespace-nowrap">Not scheduled</span>
+                  )}
                 </div>
               </div>
               <div>
@@ -500,3 +515,5 @@ const JobDetail = () => {
 };
 
 export default JobDetail;
+
+
