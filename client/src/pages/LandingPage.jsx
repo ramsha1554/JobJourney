@@ -171,8 +171,10 @@ const LandingPage = () => {
               </button>
             </div>
             <div style={{marginTop:28,display:'flex',alignItems:'center',gap:20,flexWrap:'wrap'}}>
-              {['No credit card','Free forever','Powered by Gemini AI'].map(t=>(
+              {['No credit card','Free forever','Powered by Groq AI'].map(t=>(
+
                 <span key={t} style={{display:'flex',alignItems:'center',gap:5,fontSize:12,color:'#9ca3af',fontWeight:500}}>
+
                   <CheckCircle size={13} color="#0d9488"/> {t}
                 </span>
               ))}
@@ -380,26 +382,124 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* CTA */}
       <section style={{padding:'96px 24px',background:'#0a2540',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:-80,right:-80,width:320,height:320,borderRadius:'50%',background:'rgba(13,148,136,.15)',filter:'blur(60px)',pointerEvents:'none'}}/>
-        <div style={{position:'relative',maxWidth:560,margin:'0 auto',textAlign:'center'}}>
-          <div className="reveal">
-            <h2 style={{fontSize:38,fontWeight:800,color:'white',letterSpacing:'-.02em',lineHeight:1.15,marginBottom:16}}>Ready to get<br/>organised?</h2>
-            <p style={{fontSize:16,color:'rgba(255,255,255,.55)',lineHeight:1.6,marginBottom:32}}>Free to use. No credit card. Start tracking in under a minute.</p>
-            <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:12,flexWrap:'wrap'}}>
-              <button onClick={()=>navigate('/register')} style={{background:'white',color:'#0a2540',border:'none',padding:'12px 28px',borderRadius:9,fontSize:15,fontWeight:700,cursor:'pointer',display:'inline-flex',alignItems:'center',gap:6,transition:'transform .15s,box-shadow .15s'}}
-                onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow='0 8px 24px rgba(0,0,0,.2)'}}
-                onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow='none'}}>
-                Create free account <ArrowRight size={15}/>
-              </button>
-              <button onClick={()=>navigate('/login')} style={{background:'transparent',color:'rgba(255,255,255,.7)',border:'1.5px solid rgba(255,255,255,.2)',padding:'11px 24px',borderRadius:9,fontSize:14,fontWeight:500,cursor:'pointer',transition:'border-color .15s,color .15s'}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor='rgba(255,255,255,.5)';e.currentTarget.style.color='white'}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor='rgba(255,255,255,.2)';e.currentTarget.style.color='rgba(255,255,255,.7)'}}>
-                Sign in instead
-              </button>
+
+        {/* responsive wrapper (text below illustration on mobile) */}
+        <div style={{position:'relative',maxWidth:920,margin:'0 auto'}}>
+          <div
+            className="reveal"
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 48,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            {/* LEFT COLUMN */}
+            <div style={{flex: '1 1 0%', minWidth: 240}}>
+              <h2 style={{fontSize:38,fontWeight:800,color:'white',letterSpacing:'-.02em',lineHeight:1.15,marginBottom:16,textAlign:'left'}}>
+                Ready to get organised?
+              </h2>
+              <p style={{fontSize:16,color:'rgba(255,255,255,.55)',lineHeight:1.6,marginBottom:28,textAlign:'left'}}>
+                Free to use. No credit card. Start tracking in under a minute.
+              </p>
+
+              <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap',justifyContent:'flex-start'}}>
+                <button
+                  onClick={()=>navigate('/register')}
+                  style={{background:'white',color:'#0a2540',border:'none',padding:'12px 28px',borderRadius:9,fontSize:15,fontWeight:700,cursor:'pointer',display:'inline-flex',alignItems:'center',gap:6,transition:'transform .15s,box-shadow .15s'}}
+                  onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow='0 8px 24px rgba(0,0,0,.2)'}}
+                  onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow='none'}}
+                >
+                  Create free account <ArrowRight size={15}/>
+                </button>
+
+                <button
+                  onClick={()=>navigate('/login')}
+                  style={{background:'transparent',color:'rgba(255,255,255,.7)',border:'1.5px solid rgba(255,255,255,.2)',padding:'11px 24px',borderRadius:9,fontSize:14,fontWeight:500,cursor:'pointer',transition:'border-color .15s,color .15s'}}
+                  onMouseEnter={e=>{e.currentTarget.style.borderColor='rgba(255,255,255,.5)';e.currentTarget.style.color='white'}}
+                  onMouseLeave={e=>{e.currentTarget.style.borderColor='rgba(255,255,255,.2)';e.currentTarget.style.color='rgba(255,255,255,.7)'}}
+                >
+                  Sign in instead
+                </button>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN (SVG illustration only) */}
+            <div style={{flex: '0 1 auto', width: '100%', display: 'flex', justifyContent: 'center'}}>
+              <svg
+                viewBox="0 0 400 300"
+                width="100%"
+                maxWidth="420px"
+                style={{display:'block'}}
+                aria-hidden="true"
+              >
+                {/* laptop base */}
+                <rect x="56" y="86" width="288" height="150" rx="16" fill="#0a2540" opacity="0.95" />
+                <rect x="70" y="100" width="260" height="120" rx="12" fill="#0d9488" opacity="0.12" />
+                <rect x="84" y="112" width="232" height="92" rx="10" fill="#0a2540" opacity="0.9" />
+
+                {/* kanban board headers */}
+                <rect x="96" y="124" width="66" height="18" rx="6" fill="#0d9488" opacity="0.95" />
+                <rect x="168" y="124" width="66" height="18" rx="6" fill="#e5e7eb" opacity="0.9" />
+                <rect x="240" y="124" width="54" height="18" rx="6" fill="#0d9488" opacity="0.45" />
+
+                {/* job cards (left column) */}
+                <rect x="102" y="148" width="54" height="26" rx="8" fill="#0d9488" opacity="0.95" />
+                <rect x="108" y="156" width="34" height="6" rx="3" fill="#e5e7eb" opacity="0.55" />
+                <rect x="102" y="178" width="54" height="22" rx="8" fill="#0d9488" opacity="0.35" />
+
+                {/* job cards (middle column) */}
+                <rect x="174" y="148" width="54" height="26" rx="8" fill="#e5e7eb" opacity="0.95" />
+                <rect x="180" y="156" width="34" height="6" rx="3" fill="#0a2540" opacity="0.35" />
+                <rect x="174" y="178" width="54" height="22" rx="8" fill="#e5e7eb" opacity="0.55" />
+                <rect x="180" y="184" width="30" height="5" rx="2.5" fill="#0a2540" opacity="0.25" />
+
+                {/* job cards (right column) */}
+                <rect x="246" y="148" width="42" height="26" rx="8" fill="#0d9488" opacity="0.65" />
+                <circle cx="266" cy="161" r="3" fill="#e5e7eb" opacity="0.55" />
+                <rect x="246" y="178" width="42" height="22" rx="8" fill="#0d9488" opacity="0.25" />
+
+                {/* subtle base line */}
+                <path d="M98 226 C150 250, 250 250, 302 226" fill="none" stroke="#0d9488" strokeWidth="4" opacity="0.18" strokeLinecap="round" />
+
+                {/* floating resume document */}
+                <rect x="44" y="138" width="98" height="128" rx="14" fill="#e5e7eb" opacity="0.92" />
+                <rect x="56" y="158" width="74" height="16" rx="8" fill="#0a2540" opacity="0.12" />
+                <rect x="56" y="180" width="64" height="12" rx="6" fill="#0a2540" opacity="0.10" />
+                <rect x="56" y="198" width="72" height="12" rx="6" fill="#0a2540" opacity="0.10" />
+                <rect x="56" y="216" width="52" height="10" rx="5" fill="#0a2540" opacity="0.08" />
+
+                {/* AI spark / analysis icon */}
+                <g>
+                  <path d="M255 76 L269 96 L249 90 L260 112 L241 104 L247 82 Z" fill="#0d9488" opacity="0.95" />
+                  <path d="M265 90 L274 86" stroke="#e5e7eb" strokeWidth="2" strokeLinecap="round" opacity="0.65" />
+                  <path d="M252 98 L244 104" stroke="#e5e7eb" strokeWidth="2" strokeLinecap="round" opacity="0.45" />
+                  <circle cx="260" cy="100" r="4" fill="#e5e7eb" opacity="0.55" />
+                </g>
+
+                {/* floating elements: briefcase + check badge */}
+                <g>
+                  <rect x="310" y="186" width="48" height="34" rx="12" fill="#0d9488" opacity="0.95" />
+                  <path d="M322 186 C322 176, 336 176, 336 186" fill="none" stroke="#e5e7eb" strokeWidth="2" opacity="0.7" strokeLinecap="round" />
+                  <rect x="318" y="196" width="34" height="8" rx="4" fill="#0a2540" opacity="0.22" />
+
+                  <circle cx="346" cy="120" r="18" fill="#0d9488" opacity="0.18" />
+                  <circle cx="346" cy="120" r="12" fill="#0d9488" opacity="0.95" />
+                  <path d="M340 120 L343.6 123.6 L352 114.5" fill="none" stroke="#e5e7eb" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+                </g>
+              </svg>
             </div>
           </div>
+
+          {/* inline media query for CTA layout */}
+          <style>{`
+            @media(max-width:768px){
+              .cta-2col{flex-direction:column !important;}
+            }
+          `}</style>
         </div>
       </section>
 
@@ -456,7 +556,7 @@ const LandingPage = () => {
         </div>
       </footer>
     </>
-  );
+      );
 };
 
 export default LandingPage;

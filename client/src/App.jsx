@@ -25,26 +25,30 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <Suspense fallback={<LoadingFallback />}>
-        <Routes>
-  <Route path="/login" element={<Login />} />
-  <Route path="/register" element={<Register />} />
-  <Route path="/landing" element={<LandingPage />} />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/landing" element={<LandingPage />} />
 
-  <Route path="/" element={
-    <ProtectedRoute>
-      <Layout />
-    </ProtectedRoute>
-  }>
-    <Route index element={<Dashboard />} />
-    <Route path="jobs" element={<JobBoard />} />
-    <Route path="jobs/:id" element={<JobDetail />} />
-    <Route path="resumes" element={<ResumeManager />} />
-    <Route path="analytics" element={<Analytics />} />
-    <Route path="add-job" element={<AddJob />} />
-  </Route>
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Layout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<Dashboard />} />
+                <Route path="jobs" element={<JobBoard />} />
+                <Route path="jobs/:id" element={<JobDetail />} />
+                <Route path="resumes" element={<ResumeManager />} />
+                <Route path="analytics" element={<Analytics />} />
+                <Route path="add-job" element={<AddJob />} />
+                <Route path="board" element={<JobBoard />} />
+              </Route>
 
-  <Route path="*" element={<Navigate to="/landing" replace />} />
-</Routes>
+              <Route path="*" element={<Navigate to="/landing" replace />} />
+            </Routes>
           </Suspense>
         </AuthProvider>
       </BrowserRouter>
@@ -53,3 +57,4 @@ function App() {
 }
 
 export default App;
+
