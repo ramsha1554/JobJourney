@@ -1,5 +1,5 @@
 import { Draggable } from '@hello-pangea/dnd';
-import { Building2, MapPin, CalendarClock } from 'lucide-react';
+import { Building2, MapPin, CalendarClock, Clock, CheckCircle2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
 
@@ -40,6 +40,21 @@ const JobCard = ({ job, index }) => {
                             </div>
                         </div>
 
+                        {job.status === "Interview" && job.interviewDate && (
+                          <div className="mt-2 mb-1">
+                            {new Date(job.interviewDate) > new Date() ? (
+                              <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full bg-teal-50 text-teal-700 border border-teal-200">
+                                <Clock className="w-3 h-3" />
+                                {new Date(job.interviewDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })} · Upcoming
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-500 border border-gray-200">
+                                <CheckCircle2 className="w-3 h-3" />
+                                {new Date(job.interviewDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })} · Done
+                              </span>
+                            )}
+                          </div>
+                        )}
                         <div className="border-t border-gray-50 pt-3 flex items-center justify-between text-xs text-gray-400">
                             <div className="flex items-center" title={`Applied ${formatDistanceToNow(new Date(job.dateApplied))} ago`}>
                                 <CalendarClock className="w-3.5 h-3.5 mr-1.5 flex-shrink-0" />
@@ -56,3 +71,4 @@ const JobCard = ({ job, index }) => {
 };
 
 export default JobCard;
+
