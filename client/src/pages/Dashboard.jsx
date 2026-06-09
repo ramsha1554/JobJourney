@@ -11,7 +11,7 @@ import { Bar } from 'recharts/es6/cartesian/Bar';
 import { XAxis } from 'recharts/es6/cartesian/XAxis';
 import { YAxis } from 'recharts/es6/cartesian/YAxis';
 import { CartesianGrid } from 'recharts/es6/cartesian/CartesianGrid';
-import { Loader2, Plus, Calendar, Clock, CheckCircle, FileText, CalendarCheck, Trophy, Zap } from 'lucide-react';
+import { Loader2, Plus, Calendar, Clock, CheckCircle, FileText, CalendarCheck, Trophy, Zap, Building2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -106,6 +106,86 @@ const Dashboard = () => {
                     </motion.div>
                 ))}
             </div>
+
+            {/* Upcoming Interviews */}
+            {statsData?.upcomingInterviews?.length > 0 && (
+                <div className="card p-6">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                            <CalendarCheck className="w-5 h-5 text-brand-600 mr-2" />
+                            Upcoming Interviews
+                        </h3>
+                    </div>
+
+                    <div className="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2">
+                        {statsData.upcomingInterviews.map((interview, index) => {
+                            const now = new Date();
+                            const diff = new Date(interview.interviewDate) - now;
+                            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+                            const urgency = days > 0 ? (days <= 3 ? 'soon' : 'upcoming') : (hours <= 24 ? 'today' : 'soon');
+                            const urgencyConfig =
+                                urgency === 'today'
+                                    ? { label: 'Today!', bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700' }
+                                    : urgency === 'soon'
+                                        ? { label: 'Soon', bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700' }
+                                        : { label: 'Upcoming', bg: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-700' };
+
+                            const dateObj = new Date(interview.interviewDate);
+                            const formattedDate = dateObj.toLocaleString(undefined, {
+                                weekday: 'short',
+                                month: 'short',
+                                day: '2-digit',
+                                hour: 'numeric',
+                                minute: '2-digit'
+                            });
+
+                            const countdown = days > 0
+                                ? `in ${days} day${days > 1 ? 's' : ''}`
+                                : `in ${hours} hour${hours > 1 ? 's' : ''}`;
+
+                            return (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="min-w-[320px] sm:min-w-[380px] lg:min-w-0 flex-1"
+                                >
+                                    <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <p className="text-gray-500 text-sm font-medium mb-1 flex items-center">
+                                                    <Building2 className="w-4 h-4 text-gray-400 mr-2" />
+                                                    {interview.company}
+                                                </p>
+                                                <h4 className="text-base font-bold text-gray-900">
+                                                    {interview.title}
+                                                </h4>
+                                            </div>
+                                            <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs border ${urgencyConfig.bg} ${urgencyConfig.border} ${urgencyConfig.text}`}>
+                                                {urgencyConfig.label}
+                                            </div>
+                                        </div>
+
+                                        <div className="mt-4 space-y-2">
+                                            <div className="flex items-center text-sm text-gray-600">
+                                                <CalendarCheck className="w-4 h-4 text-brand-600 mr-2" />
+                                                <span>{formattedDate.replace(',', ' ·')}</span>
+                                            </div>
+                                            <div className="flex items-center text-sm text-gray-600">
+                                                <Clock className="w-4 h-4 text-blue-600 mr-2" />
+                                                <span>{countdown}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="card p-6">
@@ -212,3 +292,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
