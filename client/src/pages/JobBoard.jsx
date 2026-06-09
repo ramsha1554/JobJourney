@@ -3,7 +3,7 @@ import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { useJobs } from '../hooks/useJobs';
 import JobCard from '../components/JobCard';
 import { Link } from 'react-router-dom';
-import { Plus, Loader2, Send, MessageSquare, CheckCircle, XCircle, HelpCircle } from 'lucide-react';
+import { Plus, Loader2, Send, MessageSquare, CheckCircle, XCircle, HelpCircle, Calendar } from 'lucide-react';
 
 const COLUMNS = {
     Applied: {
@@ -199,3 +199,4 @@ const JobBoard = () => {
 };
 
 export default JobBoard;
+
