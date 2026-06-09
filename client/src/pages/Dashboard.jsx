@@ -190,11 +190,8 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="card p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-6">Application Status</h3>
-<div className="h-64 w-full" style={{ minHeight: 256 }}>
+                    <div className="h-64 w-full" style={{ minHeight: 256 }}>
                         <div className="h-full w-full" style={{ minHeight: 256 }}>
-
-
-
                             {pieData.length > 0 ? (
                                 <ResponsiveContainer width="100%" height="100%">
                                     <PieChart>
@@ -234,9 +231,8 @@ const Dashboard = () => {
 
                 <div className="card p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-6">Application Activity</h3>
-<div className="h-64 w-full" style={{ minHeight: 256 }}>
+                    <div className="h-64 w-full" style={{ minHeight: 256 }}>
                         <div className="h-full w-full" style={{ minHeight: 256 }}>
-
                             {monthlyApplications.length > 0 ? (
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart data={monthlyApplications}>
@@ -261,29 +257,30 @@ const Dashboard = () => {
                 </div>
             </div>
 
+            {/* Tips for Success */}
             <div className="card p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Tips for Success</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex items-start p-4 bg-brand-50 rounded-xl border border-brand-100">
-                        <Calendar className="w-6 h-6 text-teal mr-3 mt-1" />
-                        <div>
-                            <h4 className="font-bold text-midnight text-sm">Consistency is Key</h4>
-                            <p className="text-xs text-gray-600 mt-1 leading-relaxed">Try to apply to 3-5 relevant jobs every day rather than mass applying once a week.</p>
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Quick wins</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
+                    <div className="p-5">
+                        <div className="flex items-center gap-2 mb-2">
+                            <Calendar className="w-4 h-4 text-gray-400" />
+                            <span className="text-sm font-medium text-gray-800">Apply daily, not in bursts</span>
                         </div>
+                        <p className="text-xs text-gray-500 leading-relaxed">3–5 targeted applications beats 50 unfocused ones. Quality over volume, every time.</p>
                     </div>
-                    <div className="flex items-start p-4 bg-indigo-50 rounded-xl border border-indigo-100">
-                        <CheckCircle className="w-6 h-6 text-indigo-600 mr-3 mt-1" />
-                        <div>
-                            <h4 className="font-bold text-midnight text-sm">Tailor Your Resume</h4>
-                            <p className="text-xs text-gray-600 mt-1 leading-relaxed">Use the Resume Manager to upload role-specific versions of your CV.</p>
+                    <div className="p-5">
+                        <div className="flex items-center gap-2 mb-2">
+                            <FileText className="w-4 h-4 text-gray-400" />
+                            <span className="text-sm font-medium text-gray-800">One resume per role</span>
                         </div>
+                        <p className="text-xs text-gray-500 leading-relaxed">Generic CVs get filtered out fast. Tailor each version to match the job description language.</p>
                     </div>
-                    <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-100">
-                        <Clock className="w-6 h-6 text-green-600 mr-3 mt-1" />
-                        <div>
-                            <h4 className="font-bold text-midnight text-sm">Follow Up</h4>
-                            <p className="text-xs text-gray-600 mt-1 leading-relaxed">Don't forget to follow up on applications that have been silent for 1-2 weeks.</p>
+                    <div className="p-5">
+                        <div className="flex items-center gap-2 mb-2">
+                            <Clock className="w-4 h-4 text-gray-400" />
+                            <span className="text-sm font-medium text-gray-800">Follow up after 10 days</span>
                         </div>
+                        <p className="text-xs text-gray-500 leading-relaxed">A short, polite note shows genuine interest. Most candidates never bother — you will stand out.</p>
                     </div>
                 </div>
             </div>
@@ -292,4 +289,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
